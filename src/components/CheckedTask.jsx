@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 export default function CheckedTask() {
+  // toggle checked on and off
   const [checked, setChecked] = useState(false);
 
   return (

@@ -1,4 +1,4 @@
-import Edit from "./reusable/Edit";
+import Edit from "../reusable/Edit";
 
 export default function EditTask() {
   return (

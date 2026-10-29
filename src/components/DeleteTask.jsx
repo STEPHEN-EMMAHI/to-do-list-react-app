@@ -6,6 +6,8 @@ export default function DeleteTask() {
         hoverColor="hover:text-red-500"
         bgColor="bg-red-500"
         borderRound="rounded-sm"
+        size="text-[22px]"
+        padding="p-1"
       />
     </div>
   );
@@ -17,13 +19,15 @@ function Delete({
   hoverColor = "hover:text-red-500",
   bgColor = "bg-red-500",
   borderRound,
+  size = "text-[20px]",
+  padding = "p-1",
 }) {
   return (
     <button
       onClick={onClick}
       type="button"
       aria-label="delete-task"
-      className={`${color} ${bgColor} ${borderRound} p-1 lg:${hoverColor} lg:cursor-pointer`}
+      className={`${color} ${bgColor} ${borderRound} ${padding} ${size} lg:${hoverColor} lg:cursor-pointer`}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

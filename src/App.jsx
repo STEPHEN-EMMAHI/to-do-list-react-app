@@ -1,7 +1,11 @@
-import "./App.css";
+import CheckedTask from "./components/CheckedTask";
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <CheckedTask />
+    </>
+  );
 }
 
 export default App;

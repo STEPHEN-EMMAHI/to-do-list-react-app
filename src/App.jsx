@@ -1,4 +1,4 @@
-import EditTask from "./components/EditTask";
+import EditTask from "./components/functional/EditTask";
 
 function App() {
   return (

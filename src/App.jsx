@@ -1,11 +1,9 @@
-import DeleteTask from "./components/DeleteTask";
+import EditTask from "./components/EditTask";
 
 function App() {
   return (
     <>
-      {/*  */}
-      {/* <CheckedTask /> */}
-      <DeleteTask />
+      <EditTask />
     </>
   );
 }

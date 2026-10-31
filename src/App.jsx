@@ -1,10 +1,10 @@
-import EditTask from "./components/functional/EditTask";
+import Heading from "./components/functional/Heading";
 
 function App() {
   return (
-    <>
-      <EditTask />
-    </>
+    <div className="font-serif">
+      <Heading />
+    </div>
   );
 }
 

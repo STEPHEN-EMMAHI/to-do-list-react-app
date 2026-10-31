@@ -1,4 +1,4 @@
-import Delete from "./reusable/Delete";
+import Delete from "../reusable/Delete";
 
 export default function DeleteTask() {
   return (

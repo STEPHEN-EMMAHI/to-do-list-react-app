@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CheckBox from "./reusable/CheckBox";
+import CheckBox from "../reusable/CheckBox";
 
 export default function CheckedTask() {
   // toggle checked on and off

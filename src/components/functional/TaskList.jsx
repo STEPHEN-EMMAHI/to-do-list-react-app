@@ -54,7 +54,7 @@ export default function TaskList({ listId, tasks, onAddTask }) {
 
 function TaskItem({ taskText }) {
   return (
-    <div className="flex gap-4 m-4 items-center p-4 lg:hover:bg-zinc-300">
+    <div className="flex gap-4 m-4 items-center p-4 border-b lg:hover:bg-zinc-300">
       <TaskCompletionToggle />
       <p>{taskText}</p>
 

@@ -1,18 +1,18 @@
-export default function Delete({
+export default function DeleteButton({
   onClick,
-  color = "text-white",
-  hoverColor = "hover:text-red-500",
-  bgColor = "bg-red-500",
-  borderRound,
-  size = "text-[20px]",
-  padding = "p-1",
+  iconColorClass = "text-white",
+  hoverColorClass = "hover:text-red-500",
+  backgroundColorClass = "bg-red-500",
+  borderRadiusClass = "",
+  iconSizeClass = "text-[20px]",
+  paddingClass = "p-1",
 }) {
   return (
     <button
       onClick={onClick}
       type="button"
-      aria-label="delete-task"
-      className={`${color} ${bgColor} ${borderRound} ${padding} ${size} lg:${hoverColor} lg:cursor-pointer`}
+      aria-label="Delete task"
+      className={`${iconColorClass} ${backgroundColorClass} ${borderRadiusClass} ${paddingClass} ${iconSizeClass} lg:${hoverColorClass} lg:cursor-pointer`}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

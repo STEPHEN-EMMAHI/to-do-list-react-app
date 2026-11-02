@@ -1,28 +1,48 @@
 import { useState } from "react";
 import Heading from "./components/functional/Heading";
 import Lists from "./components/functional/Lists";
+import TaskList from "./components/functional/TaskList";
 
 function App() {
-  // state added lists title state array
-  const [allListTitles, setAllListTitles] = useState([]);
+  // Stores every list created by the user.
+  const [lists, setLists] = useState([]);
 
-  // state to track the currently selected list title
-  const [selectedListID, setSelectedListID] = useState(null);
+  // Stores the selected list's ID; null means no list is currently selected.
+  const [selectedListId, setSelectedListId] = useState(null);
 
-  // function to add new list-title to the list
-  function addListTitle(newList) {
-    setAllListTitles((currentList) => [...currentList, newList]);
+  // store tasks by list ID so each list keeps its own tasks
+  // the object holds the tasks group
+  const [tasksByList, setTasksByList] = useState({});
+
+  function handleAddList(newList) {
+    // Use the previous state so adding a list keeps all existing lists.
+    setLists((currentLists) => [...currentLists, newList]);
+  }
+
+  // function to add task to the correct list while keeping tasks already saved for every list
+  function handleAddTask(listId, newTask) {
+    setTasksByList((currentTaskByList) => ({
+      ...currentTaskByList,
+      [listId]: [...(currentTaskByList[listId] ?? []), newTask],
+    }));
   }
 
   return (
     <div className="font-sans">
       <Heading />
       <Lists
-        onaddListTitle={addListTitle}
-        allListTitles={allListTitles}
-        selectedListID={selectedListID}
-        onsetSelectedListID={setSelectedListID}
+        lists={lists}
+        selectedListId={selectedListId}
+        onAddList={handleAddList}
+        onSelectList={setSelectedListId}
       />
+      {selectedListId && (
+        <TaskList
+          listId={selectedListId}
+          tasks={tasksByList[selectedListId] ?? []}
+          onAddTask={handleAddTask}
+        />
+      )}
     </div>
   );
 }

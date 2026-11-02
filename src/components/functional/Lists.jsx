@@ -26,16 +26,18 @@ export default function Lists({
   }
 
   return (
-    <div className="flex items-center mx-2 border-b-2 mt-8 gap-6 flex-nowrap overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden">
-      {lists.map((list) => (
-        <ListTab
-          key={list.id}
-          isSelected={selectedListId === list.id}
-          onSelect={() => onSelectList(list.id)}
-        >
-          {list.title}
-        </ListTab>
-      ))}
+    <div className="flex items-center mx-2 mt-8 gap-3 border-b-2">
+      <div className="flex min-w-0 flex-1 items-center gap-6 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden">
+        {lists.map((list) => (
+          <ListTab
+            key={list.id}
+            isSelected={selectedListId === list.id}
+            onSelect={() => onSelectList(list.id)}
+          >
+            {list.title}
+          </ListTab>
+        ))}
+      </div>
 
       <button
         type="button"

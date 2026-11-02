@@ -35,6 +35,7 @@ function App() {
         selectedListId={selectedListId}
         onAddList={handleAddList}
         onSelectList={setSelectedListId}
+        tasksByList={tasksByList}
       />
       {selectedListId && (
         <TaskList

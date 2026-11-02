@@ -6,6 +6,7 @@ export default function Lists({
   selectedListId,
   onAddList,
   onSelectList,
+  tasksByList,
 }) {
   // Controls whether the list tabs or the new-list form is displayed.
   const [isAddingList, setIsAddingList] = useState(false);
@@ -33,6 +34,7 @@ export default function Lists({
             key={list.id}
             isSelected={selectedListId === list.id}
             onSelect={() => onSelectList(list.id)}
+            numOfTasks={tasksByList[list.id]?.length ?? 0}
           >
             {list.title}
           </ListTab>
@@ -92,7 +94,7 @@ function AddListTitle({ onAddList, onCancel }) {
   );
 }
 
-function ListTab({ children, isSelected, onSelect }) {
+function ListTab({ children, isSelected, onSelect, numOfTasks }) {
   return (
     <button
       type="button"
@@ -101,7 +103,7 @@ function ListTab({ children, isSelected, onSelect }) {
         isSelected ? "border-b-blue-500" : "border-b-transparent"
       }`}
     >
-      {children}
+      {children} <span className="bg-zinc-200 p-1">{numOfTasks}</span>
     </button>
   );
 }

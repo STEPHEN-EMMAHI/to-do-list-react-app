@@ -1,40 +1,46 @@
 import { useState } from "react";
+import HandleBackwards from "./Back";
 
 export default function Lists({
-  onaddListTitle,
-  allListTitles,
-  selectedListID,
-  onsetSelectedListID,
+  lists,
+  selectedListId,
+  onAddList,
+  onSelectList,
 }) {
-  // state to track list title visibilty on and off
-  const [addingListTitle, setAddingListTitle] = useState(false);
+  // Controls whether the list tabs or the new-list form is displayed.
+  const [isAddingList, setIsAddingList] = useState(false);
 
-  // show addlist component if user is adding a list
-  if (addingListTitle) {
+  if (isAddingList) {
     return (
       <AddListTitle
-        setAddingListTitle={setAddingListTitle}
-        onaddListTitle={onaddListTitle}
+        onAddList={onAddList}
+        onCancel={() => setIsAddingList(false)}
       />
     );
   }
 
+  function handleStartAddingList() {
+    setIsAddingList(true);
+    // Clear the selection while the user is creating a different list.
+    onSelectList(null);
+  }
+
   return (
     <div className="flex items-center mx-2 border-b-2 mt-8 gap-6 flex-nowrap overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden">
-      {allListTitles.map((list) => (
-        <Title
+      {lists.map((list) => (
+        <ListTab
           key={list.id}
-          className={`lg:cursor-pointer shrink-0 whitespace-nowrap border-b-3 lg:hover:border-b-blue-500 ${selectedListID === list.id ? "border-b-blue-500" : "border-b-transparent"}`}
-          onClick={() => onsetSelectedListID(list.id)}
+          isSelected={selectedListId === list.id}
+          onSelect={() => onSelectList(list.id)}
         >
           {list.title}
-        </Title>
+        </ListTab>
       ))}
 
       <button
         type="button"
         className="shrink-0 whitespace-nowrap lg:cursor-pointer"
-        onClick={() => setAddingListTitle(true)}
+        onClick={handleStartAddingList}
       >
         + New List
       </button>
@@ -42,39 +48,29 @@ export default function Lists({
   );
 }
 
-export function AddListTitle({ setAddingListTitle, onaddListTitle }) {
-  // state to control adding list title
-  const [addListTitle, setAddList] = useState("");
+function AddListTitle({ onAddList, onCancel }) {
+  // Holds the text entered for the new list's title.
+  const [listTitle, setListTitle] = useState("");
 
-  function handleFormListSubmit(e) {
-    e.preventDefault();
+  function handleSubmitList(event) {
+    event.preventDefault();
 
-    if (!addListTitle) return;
+    // Trim whitespace and require a title before creating the list.
+    const trimmedTitle = listTitle.trim();
+    if (!trimmedTitle) return;
 
-    const newListTitle = {
+    const newList = {
       id: crypto.randomUUID(),
-      title: addListTitle,
+      title: trimmedTitle,
     };
-    onaddListTitle(newListTitle);
-
-    // after form is submitted, toggle off the addListTitle component
-    setAddingListTitle(false);
-  }
-
-  // move back if user clicks on back button
-  function handleBackwards() {
-    setAddingListTitle(false);
+    onAddList(newList);
+    onCancel();
   }
 
   return (
-    <form className="mt-4 mx-4" onSubmit={handleFormListSubmit}>
-      <button
-        className="mb-4 lg:cursor-pointer"
-        type="button"
-        onClick={handleBackwards}
-      >
-        &lt; Back
-      </button>
+    <form className="mt-4 mx-4" onSubmit={handleSubmitList}>
+      <HandleBackwards onCancel={onCancel}>&lt; Back</HandleBackwards>
+
       <h2 className="mb-2">Create a new list</h2>
       <div className="flex gap-4 items-center">
         <input
@@ -83,8 +79,8 @@ export function AddListTitle({ setAddingListTitle, onaddListTitle }) {
           name="list"
           id="list"
           placeholder="Enter list title"
-          value={addListTitle}
-          onChange={(e) => setAddList(e.target.value)}
+          value={listTitle}
+          onChange={(event) => setListTitle(event.target.value)}
         />
         <button className="border p-2.5 lg:cursor-pointer" type="submit">
           Done
@@ -94,9 +90,15 @@ export function AddListTitle({ setAddingListTitle, onaddListTitle }) {
   );
 }
 
-function Title({ children, onClick, className }) {
+function ListTab({ children, isSelected, onSelect }) {
   return (
-    <button onClick={onClick} className={className}>
+    <button
+      type="button"
+      onClick={onSelect}
+      className={`shrink-0 whitespace-nowrap border-b-3 lg:cursor-pointer lg:hover:border-b-blue-500 ${
+        isSelected ? "border-b-blue-500" : "border-b-transparent"
+      }`}
+    >
       {children}
     </button>
   );

@@ -1,11 +1,35 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DeleteButton from "../reusable/Delete";
 import EditButton from "../reusable/Edit";
 import TaskCompletionToggle from "./TaskCompletionToggle";
 
-export default function TaskList({ listId, tasks, onAddTask }) {
+export default function TaskList({
+  listId,
+  tasks,
+  onAddTask,
+  onClearAllTaskBylist,
+}) {
   // Holds the current text in the task input.
   const [taskInput, setTaskInput] = useState("");
+
+  // state to control the opend and close of the tasks options
+  const [isOpenTaskOptions, setIsOpenTaskOptions] = useState(false);
+
+  // clearing the clear all task button when we click anywhere outside its space
+  const taskOptionsRef = useRef(null);
+  useEffect(() => {
+    // if options is not open, then do nothing
+    if (!isOpenTaskOptions) return;
+
+    function handleClickOutside(event) {
+      if (!taskOptionsRef.current?.contains(event.target)) {
+        setIsOpenTaskOptions(false);
+      }
+    }
+    document.addEventListener("pointerdown", handleClickOutside);
+    return () =>
+      document.removeEventListener("pointerdown", handleClickOutside);
+  }, [isOpenTaskOptions]);
 
   function handleSubmitTask(event) {
     // Keep the browser from reloading the page when the form is submitted.
@@ -44,6 +68,37 @@ export default function TaskList({ listId, tasks, onAddTask }) {
           Add
         </button>
       </form>
+
+      {/* more options for the tasks */}
+      <div
+        ref={taskOptionsRef}
+        className="flex flex-col items-end justify-end m-4"
+      >
+        <button onClick={() => setIsOpenTaskOptions((open) => !open)}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <circle cx="12" cy="5" r="1.5" />
+            <circle cx="12" cy="12" r="1.5" />
+            <circle cx="12" cy="19" r="1.5" />
+          </svg>
+        </button>
+        {isOpenTaskOptions && (
+          <div className="mt-2 border rounded-md shadow-md">
+            <button
+              className="bg-red-600 text-white p-2"
+              onClick={() => onClearAllTaskBylist(listId)}
+            >
+              Clear All Tasks
+            </button>
+          </div>
+        )}
+      </div>
+
       {/* Render one task row per task; the ID helps React track each row. */}
       {tasks.map((task) => (
         <TaskItem key={task.id} taskText={task.text} />

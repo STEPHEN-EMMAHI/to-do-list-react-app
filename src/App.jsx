@@ -27,6 +27,20 @@ function App() {
     }));
   }
 
+  // function to clear all tasks by list
+  function clearAllTasksByList(listId) {
+    setTasksByList((currentTasksByList) => {
+      const listTasks = currentTasksByList[listId] ?? [];
+
+      if (listTasks.length === 0) return currentTasksByList;
+
+      return {
+        ...currentTasksByList,
+        [listId]: [],
+      };
+    });
+  }
+
   return (
     <div className="font-sans">
       <Heading />
@@ -42,6 +56,8 @@ function App() {
           listId={selectedListId}
           tasks={tasksByList[selectedListId] ?? []}
           onAddTask={handleAddTask}
+          tasksByList={tasksByList}
+          onClearAllTaskBylist={clearAllTasksByList}
         />
       )}
     </div>

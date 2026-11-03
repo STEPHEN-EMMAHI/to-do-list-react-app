@@ -99,11 +99,12 @@ function ListTab({ children, isSelected, onSelect, numOfTasks }) {
     <button
       type="button"
       onClick={onSelect}
-      className={`shrink-0 whitespace-nowrap border-b-3 lg:cursor-pointer lg:hover:border-b-blue-500 ${
+      className={`flex items-center gap-0.5 shrink-0 whitespace-nowrap border-b-3 lg:cursor-pointer lg:hover:border-b-blue-500 ${
         isSelected ? "border-b-blue-500" : "border-b-transparent"
       }`}
     >
-      {children} <span className="bg-zinc-200 p-1">{numOfTasks}</span>
+      <span>{children}</span>{" "}
+      <span className="p-1 rounded-full text-sm">({numOfTasks})</span>
     </button>
   );
 }

@@ -8,7 +8,7 @@ export default function Lists({
   onSelectList,
   tasksByList,
 }) {
-  // Controls whether the list tabs or the new-list form is displayed.
+  // Controls whether the list tabs is displayed.
   const [isAddingList, setIsAddingList] = useState(false);
 
   if (isAddingList) {

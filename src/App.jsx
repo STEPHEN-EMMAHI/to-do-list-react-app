@@ -8,7 +8,7 @@ function App() {
   const [lists, setLists] = useState([]);
 
   // Stores the selected list's ID; null means no list is currently selected.
-  const [selectedListId, setSelectedListId] = useState(null);
+  const [selectedList, setSelectedList] = useState(null);
 
   // store tasks by list ID so each list keeps its own tasks
   // the object holds the tasks group
@@ -51,24 +51,38 @@ function App() {
     }));
   }
 
+  // function to delete the selected list
+  function deleteSelectedList(listid) {
+    setLists((currentList) => currentList.filter((list) => list.id != listid));
+
+    setTasksByList((currentTaskByList) => {
+      const remainingTasks = { ...currentTaskByList };
+      delete remainingTasks[listid];
+      return remainingTasks;
+    });
+
+    setSelectedList(null);
+  }
+
   return (
     <div className="font-sans">
       <Heading />
       <Lists
         lists={lists}
-        selectedListId={selectedListId}
+        selectedList={selectedList}
         onAddList={handleAddList}
-        onSelectList={setSelectedListId}
+        onSelectList={setSelectedList}
         tasksByList={tasksByList}
       />
-      {selectedListId && (
+      {selectedList && (
         <TaskList
-          listId={selectedListId}
-          tasks={tasksByList[selectedListId] ?? []}
+          listId={selectedList}
+          tasks={tasksByList[selectedList] ?? []}
           onAddTask={handleAddTask}
           tasksByList={tasksByList}
           onClearAllTaskBylist={clearAllTasksByList}
           deleteTask={handleDeleteTask}
+          deleteSelectedList={deleteSelectedList}
         />
       )}
     </div>

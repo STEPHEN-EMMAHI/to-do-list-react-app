@@ -9,6 +9,7 @@ export default function TaskList({
   onAddTask,
   onClearAllTaskBylist,
   deleteTask,
+  deleteSelectedList,
 }) {
   // Holds the current text in the task input.
   const [taskInput, setTaskInput] = useState("");
@@ -93,12 +94,20 @@ export default function TaskList({
           </svg>
         </button>
         {isOpenTaskOptions && (
-          <div className="mt-2 rounded-md shadow-md">
+          <div className="mt-2 rounded-md shadow-md flex flex-col gap-0.5">
             <button
-              className="bg-red-600 text-white p-2 rounded-md"
+              className="lg:hover:bg-red-600 lg:hover:text-white p-2 lg:cursor-pointer max-lg:transition-transform max-lg:duration-100 max-lg:active:scale-95 max-lg:active:translate-y-px max-lg:active:shadow-inner"
               onClick={() => onClearAllTaskBylist(listId)}
             >
               Clear All Tasks
+            </button>
+
+            {/* clear list button */}
+            <button
+              className="p-2 lg:hover:bg-red-600 lg:hover:text-white lg:cursor-pointer max-lg:transition-transform max-lg:duration-100 max-lg:active:scale-95 max-lg:active:translate-y-px max-lg:active:shadow-inner"
+              onClick={() => deleteSelectedList(listId)}
+            >
+              Delete List
             </button>
           </div>
         )}

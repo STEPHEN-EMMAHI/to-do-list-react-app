@@ -8,6 +8,7 @@ export default function TaskList({
   tasks,
   onAddTask,
   onClearAllTaskBylist,
+  deleteTask,
 }) {
   // Holds the current text in the task input.
   const [taskInput, setTaskInput] = useState("");
@@ -74,8 +75,12 @@ export default function TaskList({
         ref={taskOptionsRef}
         className="flex flex-col items-end justify-end m-4"
       >
-        <button onClick={() => setIsOpenTaskOptions((open) => !open)}>
+        <button
+          onClick={() => setIsOpenTaskOptions((open) => !open)}
+          className="border py-2 px-0.5 lg:cursor-pointer"
+        >
           <svg
+            className="w-full"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
@@ -88,9 +93,9 @@ export default function TaskList({
           </svg>
         </button>
         {isOpenTaskOptions && (
-          <div className="mt-2 border rounded-md shadow-md">
+          <div className="mt-2 rounded-md shadow-md">
             <button
-              className="bg-red-600 text-white p-2"
+              className="bg-red-600 text-white p-2 rounded-md"
               onClick={() => onClearAllTaskBylist(listId)}
             >
               Clear All Tasks
@@ -101,13 +106,19 @@ export default function TaskList({
 
       {/* Render one task row per task; the ID helps React track each row. */}
       {tasks.map((task) => (
-        <TaskItem key={task.id} taskText={task.text} />
+        <TaskItem
+          key={task.id}
+          taskText={task.text}
+          listId={listId}
+          taskId={task.id}
+          deleteTask={deleteTask}
+        />
       ))}
     </>
   );
 }
 
-function TaskItem({ taskText }) {
+function TaskItem({ taskText, listId, deleteTask, taskId }) {
   return (
     <div className="flex gap-4 m-4 items-center p-4 border-b lg:hover:bg-zinc-300">
       <TaskCompletionToggle />
@@ -129,6 +140,7 @@ function TaskItem({ taskText }) {
           borderRadiusClass="rounded-sm"
           iconSizeClass="text-[22px]"
           paddingClass="p-1"
+          onClick={() => deleteTask(listId, taskId)}
         />
       </div>
     </div>

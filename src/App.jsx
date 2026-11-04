@@ -41,6 +41,16 @@ function App() {
     });
   }
 
+  // function to delete a task
+  function handleDeleteTask(listid, taskid) {
+    setTasksByList((currentTasksByList) => ({
+      ...currentTasksByList,
+      [listid]: (currentTasksByList[listid] ?? []).filter(
+        (task) => task.id != taskid,
+      ),
+    }));
+  }
+
   return (
     <div className="font-sans">
       <Heading />
@@ -58,6 +68,7 @@ function App() {
           onAddTask={handleAddTask}
           tasksByList={tasksByList}
           onClearAllTaskBylist={clearAllTasksByList}
+          deleteTask={handleDeleteTask}
         />
       )}
     </div>

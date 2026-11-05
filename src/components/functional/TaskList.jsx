@@ -78,7 +78,7 @@ export default function TaskList({
       >
         <button
           onClick={() => setIsOpenTaskOptions((open) => !open)}
-          className="border py-2 px-0.5 lg:cursor-pointer"
+          className="py-2 px-0.5 lg:cursor-pointer"
         >
           <svg
             className="w-full"

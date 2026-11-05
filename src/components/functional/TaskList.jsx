@@ -17,22 +17,6 @@ export default function TaskList({
   // state to control the opend and close of the tasks options
   const [isOpenTaskOptions, setIsOpenTaskOptions] = useState(false);
 
-  // clearing the clear all task button when we click anywhere outside its space
-  const taskOptionsRef = useRef(null);
-  useEffect(() => {
-    // if options is not open, then do nothing
-    if (!isOpenTaskOptions) return;
-
-    function handleClickOutside(event) {
-      if (!taskOptionsRef.current?.contains(event.target)) {
-        setIsOpenTaskOptions(false);
-      }
-    }
-    document.addEventListener("pointerdown", handleClickOutside);
-    return () =>
-      document.removeEventListener("pointerdown", handleClickOutside);
-  }, [isOpenTaskOptions]);
-
   function handleSubmitTask(event) {
     // Keep the browser from reloading the page when the form is submitted.
     event.preventDefault();
@@ -50,6 +34,22 @@ export default function TaskList({
     onAddTask(listId, newTask);
     setTaskInput("");
   }
+
+  // clearing the clear all task button when we click anywhere outside its space
+  const taskOptionsRef = useRef(null);
+  useEffect(() => {
+    // if options is not open, then do nothing
+    if (!isOpenTaskOptions) return;
+
+    function handleClickOutside(event) {
+      if (!taskOptionsRef.current?.contains(event.target)) {
+        setIsOpenTaskOptions(false);
+      }
+    }
+    document.addEventListener("pointerdown", handleClickOutside);
+    return () =>
+      document.removeEventListener("pointerdown", handleClickOutside);
+  }, [isOpenTaskOptions]);
 
   return (
     <>

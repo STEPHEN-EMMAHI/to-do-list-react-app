@@ -109,7 +109,7 @@ function App() {
         tasksByList={tasksByList}
         onsetIsHomePageImg={setIsHomePageImg}
       />
-      {isHomePageImg ? <HomePageImg /> : null}
+      {isHomePageImg && lists.length === 0 ? <HomePageImg /> : null}
       {selectedList && (
         <TaskList
           listId={selectedList}

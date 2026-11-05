@@ -7,6 +7,7 @@ export default function Lists({
   onAddList,
   onSelectList,
   tasksByList,
+  onsetIsHomePageImg,
 }) {
   // Controls whether the list tabs is displayed.
   const [isAddingList, setIsAddingList] = useState(false);
@@ -16,6 +17,11 @@ export default function Lists({
       <AddListTitle
         onAddList={onAddList}
         onCancel={() => setIsAddingList(false)}
+        // if there are no lists, then show the homepage image
+        onBack={() => {
+          setIsAddingList(false);
+          if (lists.length === 0) onsetIsHomePageImg(true);
+        }}
       />
     );
   }
@@ -24,6 +30,8 @@ export default function Lists({
     setIsAddingList(true);
     // Clear the selection while the user is creating a different list.
     onSelectList(null);
+    // the moment we start adding a list, hide the homepage-image
+    onsetIsHomePageImg(false);
   }
 
   return (
@@ -52,7 +60,7 @@ export default function Lists({
   );
 }
 
-function AddListTitle({ onAddList, onCancel }) {
+function AddListTitle({ onAddList, onCancel, onBack }) {
   // Holds the text entered for the new list's title.
   const [listTitle, setListTitle] = useState("");
 
@@ -73,7 +81,7 @@ function AddListTitle({ onAddList, onCancel }) {
 
   return (
     <form className="mt-4 mx-4" onSubmit={handleSubmitList}>
-      <HandleBackwards onCancel={onCancel}>&lt; Back</HandleBackwards>
+      <HandleBackwards onCancel={onBack}>&lt; Back</HandleBackwards>
 
       <h2 className="mb-2">Create a new list</h2>
       <div className="flex gap-4 items-center">

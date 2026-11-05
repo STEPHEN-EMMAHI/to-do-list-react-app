@@ -2,10 +2,14 @@ import { useState } from "react";
 import Heading from "./components/functional/Heading";
 import Lists from "./components/functional/Lists";
 import TaskList from "./components/functional/TaskList";
+import { HomePageImg } from "./components/functional/Home";
 
 function App() {
   // Stores every list created by the user.
   const [lists, setLists] = useState([]);
+
+  // state to control whether the homepage image should show or not
+  const [isHomePageImg, setIsHomePageImg] = useState(true);
 
   // Stores the selected list's ID; null means no list is currently selected.
   const [selectedList, setSelectedList] = useState(null);
@@ -14,6 +18,7 @@ function App() {
   // the object holds the tasks group
   const [tasksByList, setTasksByList] = useState({});
 
+  // function that handles adding a list
   function handleAddList(newList) {
     // Use the previous state so adding a list keeps all existing lists.
     setLists((currentLists) => [...currentLists, newList]);
@@ -53,6 +58,9 @@ function App() {
 
   // function to delete the selected list
   function deleteSelectedList(listid) {
+    // calculate the remaining list first, then check whether that array is empty
+    const remainingList = lists.filter((list) => list.id !== listid);
+
     setLists((currentList) => currentList.filter((list) => list.id != listid));
 
     setTasksByList((currentTaskByList) => {
@@ -62,6 +70,9 @@ function App() {
     });
 
     setSelectedList(null);
+
+    // if after deleting a list, there are no lists again, then show the homePageImage
+    if (remainingList.length === 0) setIsHomePageImg(true);
   }
 
   return (
@@ -73,7 +84,9 @@ function App() {
         onAddList={handleAddList}
         onSelectList={setSelectedList}
         tasksByList={tasksByList}
+        onsetIsHomePageImg={setIsHomePageImg}
       />
+      {isHomePageImg ? <HomePageImg /> : null}
       {selectedList && (
         <TaskList
           listId={selectedList}

@@ -3,7 +3,7 @@ import HandleBackwards from "./Back";
 
 export default function Lists({
   lists,
-  selectedListId,
+  selectedList,
   onAddList,
   onSelectList,
   tasksByList,
@@ -40,7 +40,7 @@ export default function Lists({
         {lists.map((list) => (
           <ListTab
             key={list.id}
-            isSelected={selectedListId === list.id}
+            isSelected={selectedList === list.id}
             onSelect={() => onSelectList(list.id)}
             numOfTasks={tasksByList[list.id]?.length ?? 0}
           >

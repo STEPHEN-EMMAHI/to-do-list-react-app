@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import DeleteButton from "../reusable/Delete";
 import EditButton from "../reusable/Edit";
-import TaskCompletionToggle from "./TaskCompletionToggle";
+import Checkbox from "../reusable/Checkbox";
 
 export default function TaskList({
   listId,
@@ -10,6 +10,7 @@ export default function TaskList({
   onClearAllTaskBylist,
   deleteTask,
   deleteSelectedList,
+  onToggleTaskComplete,
 }) {
   // Holds the current text in the task input.
   const [taskInput, setTaskInput] = useState("");
@@ -114,23 +115,41 @@ export default function TaskList({
       </div>
 
       {/* Render one task row per task; the ID helps React track each row. */}
-      {tasks.map((task) => (
-        <TaskItem
-          key={task.id}
-          taskText={task.text}
-          listId={listId}
-          taskId={task.id}
-          deleteTask={deleteTask}
-        />
-      ))}
+      {tasks
+        .filter((task) => !task.completed)
+        .map((task) => (
+          <TaskItem
+            key={task.id}
+            taskText={task.text}
+            listId={listId}
+            taskId={task.id}
+            deleteTask={deleteTask}
+            checked={task.completed ?? false}
+            onToggleTaskComplete={onToggleTaskComplete}
+          />
+        ))}
     </>
   );
 }
 
-function TaskItem({ taskText, listId, deleteTask, taskId }) {
+function TaskItem({
+  taskText,
+  listId,
+  deleteTask,
+  taskId,
+  checked,
+  onToggleTaskComplete,
+}) {
   return (
     <div className="flex gap-4 m-4 items-center p-4 border-b lg:hover:bg-zinc-300">
-      <TaskCompletionToggle />
+      <Checkbox
+        checked={checked}
+        onChange={(nextChecked) =>
+          onToggleTaskComplete(listId, taskId, nextChecked)
+        }
+        checkedBorderColor="border-green-500"
+        checkmarkColor="text-green-500"
+      />
       <p>{taskText}</p>
 
       <div className="ml-auto flex gap-4 mr-4 items-center">

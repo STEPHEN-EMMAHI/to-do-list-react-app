@@ -3,6 +3,7 @@ import Heading from "./components/functional/Heading";
 import Lists from "./components/functional/Lists";
 import TaskList from "./components/functional/TaskList";
 import { HomePageImg } from "./components/functional/Home";
+import CompletedTask from "./components/functional/Completed";
 
 function App() {
   // Stores every list created by the user.
@@ -30,6 +31,8 @@ function App() {
     const storedValue = localStorage.getItem("tasksByList");
     return storedValue ? JSON.parse(storedValue) : {};
   });
+
+  const selectedTasks = selectedList ? (tasksByList[selectedList] ?? []) : [];
 
   // function that handles adding a list
   function handleAddList(newList) {
@@ -88,6 +91,16 @@ function App() {
     if (remainingList.length === 0) setIsHomePageImg(true);
   }
 
+  // function that handles tasks completion
+  function handleToggleTaskComplete(listid, taskid, completed) {
+    setTasksByList((currentTaskByList) => ({
+      ...currentTaskByList,
+      [listid]: (currentTaskByList[listid] ?? []).map((task) =>
+        task.id === taskid ? { ...task, completed } : task,
+      ),
+    }));
+  }
+
   // useEffect to store the tasks in local storage
   useEffect(() => {
     localStorage.setItem("tasksByList", JSON.stringify(tasksByList));
@@ -111,15 +124,23 @@ function App() {
       />
       {isHomePageImg && lists.length === 0 ? <HomePageImg /> : null}
       {selectedList && (
-        <TaskList
-          listId={selectedList}
-          tasks={tasksByList[selectedList] ?? []}
-          onAddTask={handleAddTask}
-          tasksByList={tasksByList}
-          onClearAllTaskBylist={clearAllTasksByList}
-          deleteTask={handleDeleteTask}
-          deleteSelectedList={deleteSelectedList}
-        />
+        <>
+          <TaskList
+            listId={selectedList}
+            tasks={selectedTasks}
+            onAddTask={handleAddTask}
+            tasksByList={tasksByList}
+            onClearAllTaskBylist={clearAllTasksByList}
+            deleteTask={handleDeleteTask}
+            deleteSelectedList={deleteSelectedList}
+            onToggleTaskComplete={handleToggleTaskComplete}
+          />
+          <CompletedTask
+            listId={selectedList}
+            tasks={selectedTasks.filter((task) => task.completed)}
+            onToggleTaskComplete={handleToggleTaskComplete}
+          />
+        </>
       )}
     </div>
   );
